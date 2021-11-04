@@ -9,9 +9,9 @@ Capturas de la aplicación
 
 ### Inicio 📋
 
-![Screenshot1](imgs/1.PNG)
+![Screenshot3](imgs/3.PNG)
 
-_Pantalla principal en la que muestra los vinos creados, un boton para añadir y un boton en el que editar el vino_
+_Pantalla principal en la que muestra los vinos creados, un boton para añadir y un boton en el que editar el vino seleccionando el id correspodiente_
 
 ### Create
 
@@ -21,6 +21,6 @@ _Pantalla de creacion de vinos con EditText para rellenar los campos, con contro
 
 ### Edit
 
-![Screenshot3](imgs/3.PNG)
+![Screenshot4](imgs/4.PNG)
 
 _Pantalla de Editar vinos con la opcion de Editar o Borrar, id no modificable_
