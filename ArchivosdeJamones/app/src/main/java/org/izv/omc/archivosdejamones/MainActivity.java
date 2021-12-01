@@ -1,30 +1,18 @@
 package org.izv.omc.archivosdejamones;
 
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Environment;
-import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
-
-import org.izv.omc.archivosdejamones.data.*;
 import org.izv.omc.archivosdejamones.util.*;
-
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
-    public static final String TAG= MainActivity.class.getName() + "xyzyx";
     public static final String fileName = "archivo.txt";
     protected Button btAddPrincipal, btEditPrincipal;
     protected TextView tvContenido;
@@ -36,7 +24,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        writeExternalFile2("");
+        writeExternalFile("");
         initialize();
     }
 
@@ -67,25 +55,19 @@ public class MainActivity extends AppCompatActivity {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
 
+        //Si esta vacio no hay ninguno que editar, asi que lo ocultamos
+        if (adapter.isEmpty()) {
+            spinner.setVisibility(View.INVISIBLE);
+            btEditPrincipal.setVisibility(View.INVISIBLE);
+        } else {
+            spinner.setVisibility(View.VISIBLE);
+            btEditPrincipal.setVisibility(View.VISIBLE);
+        }
+
         tvContenido.setText(tvMensaje);
     }
 
     private void initialize(){
-
-
-        //Si no fuese estatico los metodos de CSV se crearian objetos solo para eso
-        //String csv;
-        //Csv csv = new Csv();
-        //String csvs = csv.getCsv(v);
-
-        /*
-        String csv = Csv.getCsv(v);
-        Log.v(TAG, csv);
-        Vino v2 = Csv.getVino(csv);
-        Log.v(TAG, v2.toString());
-         */
-
-
         btAddPrincipal = findViewById(R.id.btAddPrincipal);
         btEditPrincipal = findViewById(R.id.btEditPrincipal);
         tvContenido = findViewById(R.id.tvContenido);
@@ -104,7 +86,6 @@ public class MainActivity extends AppCompatActivity {
 
     private void openAdd() {
         Intent intent = new Intent(this, CreateActivity.class);
-
         startActivity(intent);
     }
 
@@ -114,43 +95,11 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    private String readFile(File file, String fileName) {
-        File f = new File(file, fileName);
-        String texto = "";
-
-        try (BufferedReader br = new BufferedReader(new FileReader((f)))) {
-            String linea;
-            while ((linea = br.readLine()) != null) {
-                texto += linea + "\n";
-            }
-        } catch (IOException e) {
-            texto = null;
-            Log.v(TAG, e.toString());
-        }
-        return texto;
-    }
-
     private String readExternalFile() {
-        return readFile(getExternalFilesDir(null), fileName);
+        return FileFunctions.readFile(getExternalFilesDir(null), fileName);
     }
 
-    private boolean writeFile2(File file, String fileName, String string){
-        File f = new File(file, fileName);
-        FileWriter fw = null; //FileWriter(File f,boolean append)
-        boolean ok=true;
-        try {
-            fw = new FileWriter(f, true);
-            fw.write(string);
-            fw.flush();
-            fw.close();
-        } catch (IOException e) {
-            ok=false;
-            Log.v(TAG, e.toString());
-        }
-        return ok;
-    }
-
-    private void writeExternalFile2(String csv) {
-        writeFile2(getExternalFilesDir(null), fileName, csv);
+    private void writeExternalFile(String csv) {
+        FileFunctions.writeFile(getExternalFilesDir(null), fileName, csv, true, true);
     }
 }

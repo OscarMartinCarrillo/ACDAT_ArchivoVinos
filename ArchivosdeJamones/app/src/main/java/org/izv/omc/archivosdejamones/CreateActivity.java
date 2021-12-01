@@ -1,23 +1,14 @@
 package org.izv.omc.archivosdejamones;
 
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
-
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
-
 import org.izv.omc.archivosdejamones.data.*;
 import org.izv.omc.archivosdejamones.util.*;
 
@@ -55,43 +46,23 @@ public class CreateActivity extends AppCompatActivity {
         btCreate.setOnClickListener((View view) -> {
             crearVino();
         });
-
-
     }
 
     private void getIds() {
         String raw = readExternalFile();
 
         String lines[] = raw.split("\n");
-        String tvMensaje="";
         idVinos.clear();
 
         for (String strTemp: lines) {
             if (!strTemp.equals("") && !strTemp.equals("\n")){
                 idVinos.add(Csv.getVino(strTemp).getId());
-                tvMensaje += Csv.getVino(strTemp) + "\n";
             }
         }
     }
 
     private String readExternalFile() {
-        return readFile(getExternalFilesDir(null), fileName);
-    }
-
-    private String readFile(File file, String fileName) {
-        File f = new File(file, fileName);
-        String texto = "";
-
-        try (BufferedReader br = new BufferedReader(new FileReader((f)))) {
-            String linea;
-            while ((linea = br.readLine()) != null) {
-                texto += linea + "\n";
-            }
-        } catch (IOException e) {
-            texto = null;
-            Log.v(TAG, e.toString());
-        }
-        return texto;
+        return FileFunctions.readFile(getExternalFilesDir(null), fileName);
     }
 
     private void crearVino() {
@@ -126,7 +97,6 @@ public class CreateActivity extends AppCompatActivity {
             }
 
             writeExternalFile(Csv.getCsv(v));
-
             finish();
         }
     }
@@ -139,23 +109,7 @@ public class CreateActivity extends AppCompatActivity {
         }
     }
 
-    private boolean writeFile(File file, String fileName, String string){
-        File f = new File(file, fileName);
-        FileWriter fw = null; //FileWriter(File f,boolean append)
-        boolean ok=true;
-        try {
-            fw = new FileWriter(f, true);
-            fw.write(string+"\n");
-            fw.flush();
-            fw.close();
-        } catch (IOException e) {
-            ok=false;
-            Log.v(TAG, e.toString());
-        }
-        return ok;
-    }
-
     private void writeExternalFile(String csv) {
-        writeFile(getExternalFilesDir(null), fileName, csv);
+        FileFunctions.writeFile(getExternalFilesDir(null), fileName, csv, true, false);
     }
 }

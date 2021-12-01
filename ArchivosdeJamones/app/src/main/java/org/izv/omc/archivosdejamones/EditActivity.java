@@ -1,24 +1,14 @@
 package org.izv.omc.archivosdejamones;
 
 import androidx.appcompat.app.AppCompatActivity;
-
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-
-import org.izv.omc.archivosdejamones.util.*;
 import org.izv.omc.archivosdejamones.util.*;
 import org.izv.omc.archivosdejamones.data.*;
-
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
 
 public class EditActivity extends AppCompatActivity {
     public static final String TAG= MainActivity.class.getName() + "xyzyx";
@@ -107,7 +97,7 @@ public class EditActivity extends AppCompatActivity {
     }
 
     private void writeExternalFile(String csv) {
-        writeFile(getExternalFilesDir(null), fileName, csv, true);
+        FileFunctions.writeFile(getExternalFilesDir(null), fileName, csv, true, false);
     }
 
     private void actionDelete() {
@@ -126,23 +116,7 @@ public class EditActivity extends AppCompatActivity {
                 }
             }
         }
-        writeFile(getExternalFilesDir(null), fileName, tvMensaje, false);
-    }
-
-    private boolean writeFile(File file, String fileName, String string, Boolean append){
-        File f = new File(file, fileName);
-        FileWriter fw = null; //FileWriter(File f,boolean append)
-        boolean ok=true;
-        try {
-            fw = new FileWriter(f, append);
-            fw.write(string+"\n");
-            fw.flush();
-            fw.close();
-        } catch (IOException e) {
-            ok=false;
-            Log.v(TAG, e.toString());
-        }
-        return ok;
+        FileFunctions.writeFile(getExternalFilesDir(null), fileName, tvMensaje, false, false);
     }
 
     private Vino cargarContenido(int id) {
@@ -164,23 +138,10 @@ public class EditActivity extends AppCompatActivity {
         return v2;
     }
 
-    private String readFile(File file, String fileName) {
-        File f = new File(file, fileName);
-        String texto = "";
-
-        try (BufferedReader br = new BufferedReader(new FileReader((f)))) {
-            String linea;
-            while ((linea = br.readLine()) != null) {
-                texto += linea + "\n";
-            }
-        } catch (IOException e) {
-            texto = null;
-            Log.v(TAG, e.toString());
-        }
-        return texto;
-    }
-
     private String readExternalFile() {
-        return readFile(getExternalFilesDir(null), fileName);
+        return FileFunctions.readFile(getExternalFilesDir(null), fileName);
     }
+
+
+
 }
