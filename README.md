@@ -9,7 +9,7 @@ Capturas de la aplicación
 
 ### Inicio 📋
 
-![Screenshot3](imgs/3.PNG)
+![Screenshot3](imgs/3_2.PNG)
 
 _Pantalla principal en la que muestra los vinos creados, un boton para añadir y un boton en el que editar el vino seleccionando el id correspodiente_
 
