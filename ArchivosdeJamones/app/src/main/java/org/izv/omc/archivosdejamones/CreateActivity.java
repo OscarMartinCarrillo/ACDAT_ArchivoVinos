@@ -96,14 +96,23 @@ public class CreateActivity extends AppCompatActivity {
                 Log.v(TAG, e.toString());
             }
 
-            writeExternalFile(Csv.getCsv(v));
-            finish();
+            //Comprobar que tiene todos los campos rellenos, si no mensaje de error
+            if(v.isValid()){
+                writeExternalFile(Csv.getCsv(v));
+                finish();
+            }else{
+                Toast.makeText(getApplicationContext(),"Rellene los campos",Toast.LENGTH_LONG).show();
+            }
         }
     }
 
     private boolean comprobarId() {
-        if(idVinos.contains(Long.parseLong(String.valueOf(etIDCreate.getText())))){
-            return true;
+        if(!etIDCreate.getText().toString().isEmpty()) {
+            if (idVinos.contains(Long.parseLong(String.valueOf(etIDCreate.getText())))) {
+                return true;
+            } else {
+                return false;
+            }
         }else {
             return false;
         }

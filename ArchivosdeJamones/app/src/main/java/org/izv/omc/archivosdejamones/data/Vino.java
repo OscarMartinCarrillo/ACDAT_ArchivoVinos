@@ -136,5 +136,8 @@ public class Vino implements Serializable {
     //pero si el has Code es distinto no son iguales
     //o1, o2 ->if(o1.equals(o2))
 
-
+    //Comprobar si el vino es valido y han rellenado los campos
+    public boolean isValid() {
+        return !(id<=0 || nombre.isEmpty() || bodega.isEmpty()  || color.isEmpty() || origen.isEmpty() || graduacion <= 0 || fecha <= 0);
+    }
 }

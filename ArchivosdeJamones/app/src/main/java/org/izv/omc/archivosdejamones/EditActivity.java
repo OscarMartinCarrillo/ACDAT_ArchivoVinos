@@ -7,6 +7,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import org.izv.omc.archivosdejamones.util.*;
 import org.izv.omc.archivosdejamones.data.*;
 
@@ -53,7 +55,6 @@ public class EditActivity extends AppCompatActivity {
 
         btEditEdit.setOnClickListener((View view) -> {
             actionEdit();
-            finish();
         });
 
         btDeleteEdit.setOnClickListener((View view) -> {
@@ -64,7 +65,6 @@ public class EditActivity extends AppCompatActivity {
     }
 
     private void actionEdit() {
-        actionDelete();
         formarVino();
     }
 
@@ -93,7 +93,14 @@ public class EditActivity extends AppCompatActivity {
             Log.v(TAG, e.toString());
         }
 
-        writeExternalFile(Csv.getCsv(v));
+        //Si los campos estan rellenos se elimina el actual y se crea el nuevo
+        if (v.isValid()){
+            actionDelete();
+            writeExternalFile(Csv.getCsv(v));
+            finish();
+        }else{
+            Toast.makeText(getApplicationContext(),"Rellene los campos", Toast.LENGTH_LONG).show();
+        }
     }
 
     private void writeExternalFile(String csv) {
